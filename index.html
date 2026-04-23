@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Euler’s Golden Pie Memory Challenge Registration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #062c5a;
+      --navy-2: #0b3b78;
+      --yellow: #ffd22e;
+      --yellow-2: #ffeb89;
+      --sky: #43a5ff;
+      --white: #ffffff;
+      --ink: #132238;
+      --muted: #5a6a7f;
+      --card: rgba(255,255,255,0.96);
+      --line: rgba(6,44,90,0.12);
+      --success: #1b9c52;
+      --shadow: 0 18px 45px rgba(5, 22, 48, 0.16);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 210, 46, 0.18), transparent 26%),
+        radial-gradient(circle at 85% 15%, rgba(67, 165, 255, 0.18), transparent 22%),
+        linear-gradient(135deg, #f4f8ff 0%, #eef5ff 35%, #f8fbff 100%);
+      min-height: 100%;
+    }
+
+    body {
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 0.28fr 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .hero,
+    .panel {
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      background:
+        linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0) 45%),
+        linear-gradient(145deg, var(--navy) 0%, #07366d 58%, #0b4b9b 100%);
+      color: var(--white);
+      min-height: 180px;
+      padding: 28px 22px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 180px;
+      height: 180px;
+      background: rgba(255, 210, 46, 0.11);
+      top: -60px;
+      right: -40px;
+    }
+
+    .hero::after {
+      width: 180px;
+      height: 180px;
+      background: rgba(67, 165, 255, 0.10);
+      bottom: -70px;
+      left: -60px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--yellow);
+      box-shadow: 0 0 0 6px rgba(255, 210, 46, 0.14);
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.8);
+      padding: 28px;
+      position: relative;
+    }
+
+    .panel-header {
+      margin-bottom: 18px;
+    }
+
+    .panel-header h2 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+      color: var(--navy);
+    }
+
+    .panel-subtext {
+      font-size: 0.98rem;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(6,44,90,0.07);
+      color: var(--navy);
+      border: 1px solid rgba(6,44,90,0.08);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      white-space: nowrap;
+      margin-bottom: 12px;
+    }
+
+    .mini-alert {
+      border-left: 5px solid var(--yellow);
+      background: linear-gradient(90deg, rgba(255,210,46,0.18), rgba(255,210,46,0.06));
+      border-radius: 16px;
+      padding: 16px 16px 16px 18px;
+      margin-bottom: 20px;
+      line-height: 1.65;
+      color: #334258;
+    }
+
+    .mini-alert strong {
+      color: var(--navy);
+    }
+
+    form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    input {
+      width: 100%;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--ink);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #8d98a8;
+    }
+
+    input:focus {
+      border-color: var(--sky);
+      box-shadow: 0 0 0 5px rgba(67,165,255,0.14);
+      transform: translateY(-1px);
+    }
+
+    .consent-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #f7faff;
+      border: 1px solid rgba(6,44,90,0.09);
+      border-radius: 18px;
+      padding: 15px 16px;
+      margin-top: 4px;
+    }
+
+    .consent-box input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--navy);
+      flex: 0 0 auto;
+    }
+
+    .consent-box label {
+      color: #31425a;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      background: linear-gradient(135deg, var(--yellow) 0%, #ffbf00 100%);
+      color: var(--navy);
+      border-radius: 18px;
+      padding: 15px 22px;
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(255, 191, 0, 0.25);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 34px rgba(255, 191, 0, 0.32);
+    }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .status {
+      min-height: 24px;
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--navy-2);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(6,44,90,0.08);
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.65;
+    }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 26px 12px 8px;
+      animation: pop 0.35s ease;
+    }
+
+    .success-icon {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #dcffe9, #f0fff5);
+      color: var(--success);
+      font-size: 2rem;
+      box-shadow: inset 0 0 0 10px rgba(27, 156, 82, 0.08);
+    }
+
+    .success-screen h3 {
+      margin: 0 0 10px;
+      font-size: 2rem;
+      color: var(--navy);
+    }
+
+    .success-screen p {
+      margin: 0 auto 10px;
+      max-width: 480px;
+      line-height: 1.72;
+      color: #46566e;
+    }
+
+    .success-reminder {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: #f7faff;
+      color: var(--navy);
+      font-weight: 700;
+      border: 1px solid rgba(6,44,90,0.08);
+    }
+
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(8px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (max-width: 1020px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: unset;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 14px;
+      }
+
+      .hero,
+      .panel {
+        border-radius: 24px;
+      }
+
+      .hero,
+      .panel {
+        padding: 22px;
+      }
+
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-header h2 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span> Hilliard Library Event Registration</div>
+    </section>
+
+    <section class="panel">
+      <div id="formWrap">
+        <div class="panel-header">
+          <div class="badge">Limited Spots</div>
+          <h2>Euler’s Golden Pie Memory Challenge</h2>
+          <div class="panel-subtext">
+            Reserve a spot for the Hilliard Library event. Please complete the registration below.
+          </div>
+        </div>
+
+        <div class="mini-alert">
+          <strong>Before you submit:</strong> Please enter parent/guardian details carefully. This registration form does
+          <strong>not</strong> replace the required physical consent form for the event.
+        </div>
+
+        <form id="regForm">
+          <div class="field-grid">
+            <div class="field full">
+              <label for="parentName">Parent/Guardian Full Name</label>
+              <input id="parentName" name="parentName" type="text" placeholder="Enter full parent/guardian name" required />
+            </div>
+
+            <div class="field full">
+              <label for="childName">Child Full Name</label>
+              <input id="childName" name="childName" type="text" placeholder="Enter child’s full name" required />
+            </div>
+
+            <div class="field">
+              <label for="grade">Grade</label>
+              <input id="grade" name="grade" type="text" placeholder="5th or 6th" required />
+            </div>
+
+            <div class="field">
+              <label for="age">Age</label>
+              <input id="age" name="age" type="number" placeholder="Age" required />
+            </div>
+
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input id="email" name="email" type="email" placeholder="parent@example.com" required />
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone Number</label>
+              <input id="phone" name="phone" type="tel" placeholder="(555) 123-4567" required />
+            </div>
+          </div>
+
+          <div class="consent-box">
+            <input id="consent" name="consent" type="checkbox" required />
+            <label for="consent">
+              I confirm that I am the parent/guardian of the child listed above, and I understand that a physical
+              consent form must be signed for participation and for any photography, video recording, website features,
+              or YouTube channel features.
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit" id="submitBtn">Register Now</button>
+            <div class="helper">You’ll see a confirmation screen immediately after a successful submission.</div>
+          </div>
+
+          <div class="status" id="status"></div>
+        </form>
+
+        <div class="footer-note">
+          This registration is intended for the Euler’s Golden Pie Memory Challenge event hosted at Hilliard Library.
+          Double-check your email and phone number so follow-up details can reach you without chaos.
+        </div>
+      </div>
+
+      <div class="success-screen" id="successMessage">
+        <div class="success-icon">✓</div>
+        <h3>Registration Received</h3>
+        <p>
+          Thanks for registering for the Euler’s Golden Pie Memory Challenge. Your information has been received, and
+          event details can now be shared with your family.
+        </p>
+        <p class="success-reminder">
+          Reminder: a parent/guardian must still physically sign the official consent form before participation.
+        </p>
+        <div class="actions" style="justify-content: center; margin-top: 22px;">
+          <button class="btn" type="button" id="newSubmissionBtn">Create a New Submission</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxC-QiHskSHlwi-fSIg4SXFkcK9yzIg2KJDCzKybrgiJa7gJOpDeIRPX9rCQ78haOBCog/exec";
+    const form = document.getElementById("regForm");
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submitBtn");
+    const formWrap = document.getElementById("formWrap");
+    const successMessage = document.getElementById("successMessage");
+    const newSubmissionBtn = document.getElementById("newSubmissionBtn");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      if (!scriptURL || scriptURL === "") {
+        statusEl.textContent = "Add your Google Apps Script Web App URL first, then try again.";
+        return;
+      }
+
+      const formData = {
+        parentName: form.parentName.value.trim(),
+        childName: form.childName.value.trim(),
+        grade: form.grade.value.trim(),
+        age: form.age.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        consent: form.consent.checked ? "Yes" : "No"
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+      statusEl.textContent = "Sending registration...";
+
+      try {
+        await fetch(scriptURL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(formData)
+        });
+
+        formWrap.style.display = "none";
+        successMessage.style.display = "block";
+        statusEl.textContent = "";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Register Now";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        statusEl.textContent = "Submission failed. Make sure your Apps Script is deployed as a Web App and that the URL is correct.";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Register Now";
+      }
+    });
+
+    if (newSubmissionBtn) {
+      newSubmissionBtn.addEventListener("click", function () {
+        form.reset();
+        successMessage.style.display = "none";
+        formWrap.style.display = "block";
+        statusEl.textContent = "";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Register Now";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+  </script>
+</body>
+</html>
